@@ -17,21 +17,27 @@ import * as yup from "yup";
 
 import Logo from "../../assets/logo-kenzie-burger.svg";
 import Details from "../../assets/details.png";
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const signInSchema = yup.object().shape({
-  name: yup.string().required("Nome obrigatório"),
+  email: yup.string().required("Email obrigatório"),
   password: yup.string().min(6).required("Senha obrigatória"),
 });
 
 interface SignInData {
-  name: string;
+  email: string;
   password: string;
 }
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
+
+  const { signIn, user } = useAuth();
+
+  console.log(user);
 
   const {
     formState: { errors },
@@ -41,7 +47,14 @@ export const Login = () => {
     resolver: yupResolver(signInSchema),
   });
 
-  const handleSignIn = (data: SignInData) => console.log(errors);
+  const handleSignIn = ({ email, password }: SignInData) => {
+    setLoading(true);
+
+    signIn({ email, password })
+      .then((_) => setLoading(false))
+      .catch((err) => setLoading(false));
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -104,19 +117,19 @@ export const Login = () => {
           bg="white"
           color="grey.600"
         >
-          <Heading size="md" >
-            Login
-          </Heading>
+          <Heading size="md">Login</Heading>
           <VStack h="90%" gap="10px" justifyContent="space-around">
             <Input
-              placeholder="Digite seu nome"
-              label="Nome"
-              type="text"
-              error={errors.name}
+              email={""}
+              placeholder="Digite seu email"
+              label="Email"
+              type="email"
+              error={errors.email}
               icon={FaUser}
-              {...register("name")}
+              {...register("email")}
             />
             <Input
+              email={""}
               placeholder="Digite sua senha"
               label="Senha"
               type="password"

@@ -20,7 +20,7 @@ import {
 } from "react";
 
 interface InputProps extends ChakraInputProps {
-  name: string;
+  email: string;
   label?: string;
   error?: FieldError | null;
   icon?: IconType;
@@ -38,7 +38,7 @@ const inputVariation: inputVariationOptions = {
 };
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { name, icon: Icon, label, error = null, ...rest },
+  { email, icon: Icon, label, error = null, ...rest },
   ref
 ) => {
   const [value, setValue] = useState("");
@@ -87,7 +87,6 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         )}
 
         <ChakraInput
-          name={name}
           onChangeCapture={(e) => setValue(e.currentTarget.value)}
           variant="outline"
           color={inputVariation[variation]}
