@@ -11,7 +11,13 @@ import {
 import { IconType } from "react-icons/lib";
 import { FieldError } from "react-hook-form";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  ForwardRefRenderFunction,
+  forwardRef,
+} from "react";
 
 interface InputProps extends ChakraInputProps {
   name: string;
@@ -20,38 +26,94 @@ interface InputProps extends ChakraInputProps {
   icon?: IconType;
 }
 
-export const Input = ({
-  name,
-  error = null,
-  icon: Icon,
-  label,
-  ...rest
-}: InputProps) => {
-  return (
-    <FormControl>
-      {!!label && <FormLabel>{label}</FormLabel>}
+type inputVariationOptions = {
+  [key: string]: string;
+};
 
-      <InputGroup flexDirection="column">
+const inputVariation: inputVariationOptions = {
+  error: "signal.negative",
+  default: "grey.300",
+  focus: "grey.600",
+  filled: "signal.success",
+};
+
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { name, icon: Icon, label, error = null, ...rest },
+  ref
+) => {
+  const [value, setValue] = useState("");
+  const [variation, setVariation] = useState("default");
+
+  useEffect(() => {
+    if (error) {
+      return setVariation("error");
+    }
+  }, [error]);
+
+  const handleInputFocus = useCallback(() => {
+    if (!error) {
+      return setVariation("focus");
+    }
+  }, [error]);
+
+  const handleInputBlur = useCallback(() => {
+    if (value.length > 1 && !error) {
+      return setVariation("filled");
+    }
+  }, [error, value]);
+
+  return (
+    <FormControl isInvalid={!!error}>
+      {!!label && (
+        <FormLabel
+          color={inputVariation[variation]}
+          bgColor="white"
+          position="absolute"
+          top="-1"
+          zIndex="1"
+          ml="2"
+          padding="0 5px"
+          borderRadius="3px"
+        >
+          {label}
+        </FormLabel>
+      )}
+
+      <InputGroup flexDirection="column" zIndex="0" m="10px 0">
         {Icon && (
-          <InputLeftElement mt="2.5">
+          <InputLeftElement color={inputVariation[variation]} mt="1.9">
             <Icon />
           </InputLeftElement>
         )}
 
         <ChakraInput
           name={name}
+          onChangeCapture={(e) => setValue(e.currentTarget.value)}
           variant="outline"
-          outline='3px solid'
-          outlineColor='gray.600'
-          _hover={{ outlineColor: "gray.300" }}
-          _placeholder={{ color: "gray.300" }}
-          size='lg'
-          h='60px'
+          color={inputVariation[variation]}
+          border="2.5px solid"
+          borderColor={inputVariation[variation]}
+          borderRadius="5px"
+          onFocus={handleInputFocus}
+          onBlurCapture={handleInputBlur}
+          _hover={{ borderColor: "grey.100" }}
+          _placeholder={{ color: "grey.300" }}
+          focusBorderColor="none"
+          size="md"
+          h="50px"
+          position="relative"
+          ref={ref}
           {...rest}
         />
 
-        {!!error && <FormErrorMessage>{error.message}</FormErrorMessage>}
+        {!!error && (
+          <FormErrorMessage color="signal.negative">
+            {error.message}
+          </FormErrorMessage>
+        )}
       </InputGroup>
     </FormControl>
   );
 };
+
+export const Input = forwardRef(InputBase);
