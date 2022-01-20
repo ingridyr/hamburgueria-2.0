@@ -20,7 +20,7 @@ import {
 } from "react";
 
 interface InputProps extends ChakraInputProps {
-  email: string;
+  email?: string;
   label?: string;
   error?: FieldError | null;
   icon?: IconType;
