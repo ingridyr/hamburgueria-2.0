@@ -70,10 +70,11 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
           bgColor="white"
           position="absolute"
           top="-1"
+          h="18px"
           zIndex="1"
           ml="2"
           padding="0 5px"
-          borderRadius="3px"
+          borderRadius="3px 3px 0 0"
         >
           {label}
         </FormLabel>

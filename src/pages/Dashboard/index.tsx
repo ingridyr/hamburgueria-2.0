@@ -1,3 +1,4 @@
+import { Grid } from "@chakra-ui/react";
 import { Header } from "../../components/Header";
 
 const Dashboard = () => {
@@ -5,6 +6,9 @@ const Dashboard = () => {
   return (
     <>
       <Header></Header>
+      <Grid>
+
+      </Grid>
     </>
   );
 };
