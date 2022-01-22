@@ -23,7 +23,7 @@ export const Header = () => {
         borderColor="grey.300"
         justifyContent="space-between"
         alignItems="center"
-        p="0 20px"
+        p="0 5%"
       >
         <Image src={Logo} alt="logo" w="210px" h="80px" />
         <Flex>

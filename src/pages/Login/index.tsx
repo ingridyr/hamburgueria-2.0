@@ -21,7 +21,7 @@ import { LoginInfo } from "./LoginInfo";
 import { ModalError } from "../../components/Modal/ModalError";
 
 const signInSchema = yup.object().shape({
-  email: yup.string().required("Nome obrigatório"),
+  email: yup.string().email("Formato inválido").required("Email obrigatório"),
   password: yup
     .string()
     .required("Senha obrigatória")
@@ -43,8 +43,6 @@ export const Login = () => {
     onOpen: onModalErrorOpen,
     onClose: onModalErrorClose,
   } = useDisclosure();
-
-  console.log(user);
 
   const {
     formState: { errors },

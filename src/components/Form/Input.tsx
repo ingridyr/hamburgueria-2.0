@@ -107,7 +107,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         />
 
         {!!error && (
-          <FormErrorMessage color="signal.negative">
+          <FormErrorMessage color={inputVariation[variation]}>
             {error.message}
           </FormErrorMessage>
         )}

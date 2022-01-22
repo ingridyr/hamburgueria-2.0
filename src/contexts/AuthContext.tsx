@@ -12,15 +12,15 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+interface AuthState {
+  accessToken: string;
+  user: User;
+}
+
 interface User {
   email: string;
   id: string;
   name: string;
-}
-
-interface AuthState {
-  accessToken: string;
-  user: User;
 }
 
 interface SignInCredentials {
@@ -75,9 +75,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = useCallback(() => {
     localStorage.removeItem("Kb:accessToken");
     localStorage.removeItem("Kb:user");
-    navigate('/')
-
+    
     setData({} as AuthState);
+    navigate('/')
   }, []);
 
   return (

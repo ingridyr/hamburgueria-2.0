@@ -23,7 +23,7 @@ import { ModalError } from "../../components/Modal/ModalError";
 
 const signUpSchema = yup.object().shape({
   name: yup.string().required("Nome obrigatório"),
-  email: yup.string().required("Email obrigatório"),
+  email: yup.string().email("Formato inválido").required("Email obrigatório"),
   password: yup
     .string()
     .required("Senha obrigatória")
