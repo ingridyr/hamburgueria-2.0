@@ -4,9 +4,11 @@ import Logo from "../../assets/logo-kenzie-burger.svg";
 import { theme } from "../../styles/theme";
 import { useAuth } from "../../contexts/AuthContext";
 import { ModalCart } from "../Modal/ModalCart";
+import { useCart } from "../../contexts/CartContext";
 
 export const Header = () => {
   const { signOut } = useAuth();
+  const { counter } = useCart();
 
   const {
     isOpen: isModalCartOpen,
@@ -51,7 +53,7 @@ export const Header = () => {
               fontWeight="600"
               textAlign="center"
             >
-              0
+              {counter}
             </Flex>
           </Box>
           <FaSignOutAlt

@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import api from "../services/api";
 import { useAuth } from "./AuthContext";
-import { useCart } from "./CartContext";
 
 interface ProductsProviderProps {
   children: ReactNode;
@@ -18,10 +17,12 @@ interface Products {
 
 interface ProductsContextData {
   products: Products;
-  showProducts: (data: Products, accessToken: string) => Promise<void>
+  getProducts: () => void;
 }
 
-const ProductsContext = createContext<ProductsContextData>({} as ProductsContextData);
+const ProductsContext = createContext<ProductsContextData>(
+  {} as ProductsContextData
+);
 
 const useProducts = () => {
   const context = useContext(ProductsContext);
@@ -36,22 +37,31 @@ const useProducts = () => {
 const ProductsProvider = ({ children }: ProductsProviderProps) => {
   const [products, setProducts] = useState<Products[]>([]);
 
-  const { accessToken }  = useAuth()
+  const token = localStorage.getItem("@Kb:accessToken");
 
-  useEffect(() => {
-    api
+  const getProducts = async () => {
+    await api
       .get("/products", {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         setProducts(response.data);
       });
-  }, [accessToken]);
+  };
+
+  useEffect(() => {
+    getProducts()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <ProductsContext.Provider value={{ products } as unknown as ProductsContextData}>{children}</ProductsContext.Provider>
+    <ProductsContext.Provider
+      value={{ products, getProducts } as unknown as ProductsContextData}
+    >
+      {children}
+    </ProductsContext.Provider>
   );
 };
 

@@ -36,7 +36,7 @@ interface SignInData {
 export const Login = () => {
   const [loading, setLoading] = useState(false);
 
-  const { signIn, user } = useAuth();
+  const { signIn } = useAuth();
 
   const {
     isOpen: isModalErrorOpen,

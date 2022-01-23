@@ -6,8 +6,6 @@ import { useProducts } from "../../contexts/ProductsContext";
 const Dashboard = () => {
   const { products } = useProducts();
 
-  console.log(products);
-
   return (
     <>
       <Header></Header>

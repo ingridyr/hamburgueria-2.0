@@ -65,16 +65,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const { accessToken, user } = response.data;
 
-    localStorage.setItem("Kb:accessToken", accessToken);
-    localStorage.setItem("Kb:user", JSON.stringify(user));
+    localStorage.setItem("@Kb:accessToken", accessToken);
+    localStorage.setItem("@Kb:user", JSON.stringify(user));
 
     setData({ accessToken, user });
     navigate('/dashboard')
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem("Kb:accessToken");
-    localStorage.removeItem("Kb:user");
+    localStorage.removeItem("@Kb:accessToken");
+    localStorage.removeItem("@Kb:user");
     
     setData({} as AuthState);
     navigate('/')
