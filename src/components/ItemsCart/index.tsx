@@ -44,7 +44,7 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
     >
       <Flex>
         <Flex
-          bgColor="grey.100"
+          bgColor="grey.50"
           w="80px"
           h="80px"
           borderRadius="5px"
@@ -73,11 +73,12 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
           >
             <Button
               variant="ghost"
-              bgColor="grey.100"
+              bgColor="grey.50"
               borderRadius="0"
               color="color.secondary"
               w="10%"
               h="100%"
+              _hover={{ bgColor: "grey.100" }}
               onClick={() => deleteProduct(products)}
             >
               -
@@ -88,18 +89,19 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
               w="40%"
               h="100%"
               border="3px solid"
-              borderColor="grey.100"
+              borderColor="grey.50"
             >
               {countProduct}
             </Text>
 
             <Button
               variant="ghost"
-              bgColor="grey.100"
+              bgColor="grey.50"
               borderRadius="0"
               w="10%"
               h="100%"
               color="color.secondary"
+              _hover={{ bgColor: "grey.100" }}
               onClick={() => addProduct(products)}
             >
               +
@@ -107,7 +109,7 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
           </Flex>
         </Flex>
       </Flex>
-      <Box m="30px 15px">
+      <Box m="30px 15px" >
         <FaTrash
           color={theme.colors.grey["150"]}
           onClick={() => deleteProduct(products)}

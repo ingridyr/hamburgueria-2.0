@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { useToast } from "@chakra-ui/react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface CartProps {
   children: ReactNode;
@@ -17,7 +24,7 @@ interface CartProviderData {
   cart: ProductCardProps[];
   addProduct: (product: ProductCardProps) => void;
   deleteProduct: (productToBeDeleted: ProductCardProps) => void;
-  totalValue: (productTotal: ProductCardProps) => void;
+  removeAllItems: () => void;
   counter: number;
   setCounter: any;
 }
@@ -29,11 +36,10 @@ export const CartProvider = ({ children }: CartProps) => {
     JSON.parse(localStorage.getItem("@cart") || "[]")
   );
 
-  //console.log(cart);
   const [counter, setCounter] = useState<number>(0);
 
   useEffect(() => {
-    setCounter(cart.length)
+    setCounter(cart.length);
   }, [cart]);
 
   const addProduct = (product: ProductCardProps) => {
@@ -51,9 +57,9 @@ export const CartProvider = ({ children }: CartProps) => {
     localStorage.setItem("@cart", JSON.stringify(newCart));
   };
 
-  const totalValue = (productTotal: ProductCardProps) => {
-    const total = productTotal.price;
-    return total;
+  const removeAllItems = () => {
+    setCart([]);
+    localStorage.setItem("@cart", JSON.stringify([]));
   };
 
   return (
@@ -62,7 +68,7 @@ export const CartProvider = ({ children }: CartProps) => {
         cart,
         addProduct,
         deleteProduct,
-        totalValue,
+        removeAllItems,
         counter,
         setCounter,
       }}

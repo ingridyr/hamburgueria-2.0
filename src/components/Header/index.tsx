@@ -1,4 +1,4 @@
-import { Box, Flex, Image, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Image, useToast, useDisclosure } from "@chakra-ui/react";
 import { FaShoppingCart, FaSignOutAlt } from "react-icons/fa";
 import Logo from "../../assets/logo-kenzie-burger.svg";
 import { theme } from "../../styles/theme";
@@ -10,11 +10,24 @@ export const Header = () => {
   const { signOut } = useAuth();
   const { counter } = useCart();
 
+  const toast = useToast();
+
   const {
     isOpen: isModalCartOpen,
     onOpen: onModalCartOpen,
     onClose: onModalCartClose,
   } = useDisclosure();
+
+  const handleSignOut = () => {
+    toast({
+      title: "Ate mais",
+      duration: 9000,
+      isClosable: true,
+      status: "warning",
+      position: "top",
+    });
+    signOut();
+  };
 
   return (
     <>
@@ -59,7 +72,7 @@ export const Header = () => {
           <FaSignOutAlt
             size={25}
             color={theme.colors.grey["150"]}
-            onClick={signOut}
+            onClick={handleSignOut}
             cursor="pointer"
           />
         </Flex>

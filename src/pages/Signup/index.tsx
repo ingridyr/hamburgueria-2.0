@@ -7,6 +7,7 @@ import {
   useDisclosure,
   Text,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { Input } from "../../components/Form/Input";
@@ -44,6 +45,7 @@ interface SignUpData {
 export const Signup = () => {
   const [loading, setLoading] = useState(false);
 
+  const toast = useToast();
   const navigate = useNavigate();
 
   const {
@@ -65,11 +67,17 @@ export const Signup = () => {
 
     api
       .post("/register", { name, email, password })
-      .then((response) => {
+      .then((_) => {
         setLoading(false);
         navigate("/");
+        toast({
+          title: 'Conta criada com sucesso',
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
       })
-      .catch((err) => {
+      .catch((_) => {
         setLoading(false);
         onModalErrorOpen();
       });

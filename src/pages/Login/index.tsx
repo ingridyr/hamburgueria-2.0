@@ -6,6 +6,7 @@ import {
   VStack,
   Button,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Input } from "../../components/Form/Input";
@@ -25,7 +26,7 @@ const signInSchema = yup.object().shape({
   password: yup
     .string()
     .required("Senha obrigatória")
-    .min(6, "A senha precisa ter no mínimo 6 dígitos")
+    .min(6, "A senha precisa ter no mínimo 6 dígitos"),
 });
 
 interface SignInData {
@@ -35,8 +36,9 @@ interface SignInData {
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
 
   const {
     isOpen: isModalErrorOpen,
@@ -56,7 +58,16 @@ export const Login = () => {
     setLoading(true);
 
     signIn(data)
-      .then((_) => setLoading(false))
+      .then((_) => {
+        setLoading(false);
+        toast({
+          title: "Bem vindo(a)",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
+      })
       .catch((err) => {
         setLoading(false);
         onModalErrorOpen();

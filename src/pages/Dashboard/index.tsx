@@ -1,4 +1,4 @@
-import { Grid } from "@chakra-ui/react";
+import { Grid, } from "@chakra-ui/react";
 import { Header } from "../../components/Header";
 import { ProductCard } from "../../components/ProductCard";
 import { useProducts } from "../../contexts/ProductsContext";

@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Image, Text, useToast } from "@chakra-ui/react";
 import { useCart } from "../../contexts/CartContext";
 
 interface Products {
@@ -14,8 +14,20 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ products }: ProductCardProps) => {
-  
   const { addProduct } = useCart();
+
+  const toast = useToast();
+
+  const handleClick = (item: any) => {
+    addProduct(item);
+    toast({
+      title: "Produto adicionado ao carrinho",
+      duration: 9000,
+      isClosable: true,
+      status: "success",
+      position: "top",
+    });
+  };
 
   return (
     <>
@@ -28,6 +40,7 @@ export const ProductCard = ({ products }: ProductCardProps) => {
         h="346px"
         borderColor="grey.100"
         cursor="pointer"
+        _hover={{ borderColor: "color.primary" }}
       >
         <Flex bgColor="grey.0" w="100%" h="40%" justifyContent="center">
           <Image src={products.image} alt={products.title} />
@@ -46,7 +59,7 @@ export const ProductCard = ({ products }: ProductCardProps) => {
             size="md"
             bgColor="grey.150"
             color="white"
-            onClick={() => addProduct(products)}
+            onClick={() => handleClick(products)}
           >
             Adicionar
           </Button>
