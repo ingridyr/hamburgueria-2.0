@@ -40,7 +40,8 @@ export const ProductCard = ({ products }: ProductCardProps) => {
         h="346px"
         borderColor="grey.100"
         cursor="pointer"
-        _hover={{ borderColor: "color.primary" }}
+        _hover={{ borderColor: "color.primary", transform: "translateY(-7px)" }}
+        transition="border 1s, ease 4s,"
       >
         <Flex bgColor="grey.0" w="100%" h="40%" justifyContent="center">
           <Image src={products.image} alt={products.title} />

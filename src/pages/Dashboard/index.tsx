@@ -19,7 +19,7 @@ const Dashboard = () => {
         justifyContent="center"
         m="10px auto"
         p="30px"
-      >
+       >
         {products.map((item) => (
           <ProductCard products={item} />
         ))}

@@ -20,7 +20,7 @@ export const Header = () => {
 
   const handleSignOut = () => {
     toast({
-      title: "Ate mais",
+      title: "Até mais!",
       duration: 9000,
       isClosable: true,
       status: "warning",
