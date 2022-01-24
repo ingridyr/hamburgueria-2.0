@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface CartProps {
   children: ReactNode;
@@ -18,8 +18,6 @@ interface CartProviderData {
   addProduct: (product: ProductCardProps) => void;
   deleteProduct: (productToBeDeleted: ProductCardProps) => void;
   totalValue: (productTotal: ProductCardProps) => void;
-  increment: () => void;
-  decrement: () => void;
   counter: number;
   setCounter: any;
 }
@@ -31,37 +29,25 @@ export const CartProvider = ({ children }: CartProps) => {
     JSON.parse(localStorage.getItem("@cart") || "[]")
   );
 
+  //console.log(cart);
   const [counter, setCounter] = useState<number>(0);
 
-  const decrement = () => {
-    setCounter(counter - 1);
-  };
-
-  const increment = () => {
-    setCounter(counter + 1);
-  };
+  useEffect(() => {
+    setCounter(cart.length)
+  }, [cart]);
 
   const addProduct = (product: ProductCardProps) => {
-    const { id } = product;
-    let index = cart.findIndex((item) => item.id === id);
-
-    if (index === -1) {
-      let result = [...cart, product];
-      setCart(result);
-      localStorage.setItem("@cart", JSON.stringify(result));
-      increment()
-    } else {
-      increment();
-    }
+    const result = [...cart, product];
+    setCart(result);
+    localStorage.setItem("@cart", JSON.stringify(result));
   };
 
   const deleteProduct = (productToBeDeleted: ProductCardProps) => {
     const { id } = productToBeDeleted;
-    let index = cart.findIndex((item) => item.id === id);
+    const index = cart.findIndex((item) => item.id === id);
 
     const newCart = cart.filter((_, currIndex) => currIndex !== index);
     setCart(newCart);
-    decrement()
     localStorage.setItem("@cart", JSON.stringify(newCart));
   };
 
@@ -77,10 +63,8 @@ export const CartProvider = ({ children }: CartProps) => {
         addProduct,
         deleteProduct,
         totalValue,
-        decrement,
-        increment,
         counter,
-        setCounter
+        setCounter,
       }}
     >
       {children}

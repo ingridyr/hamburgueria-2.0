@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useCart } from "../../contexts/CartContext";
 import { theme } from "../../styles/theme";
@@ -17,22 +17,17 @@ interface ItemsCartProps {
 }
 
 export const ItemsCart = ({ products }: ItemsCartProps) => {
-  const { deleteProduct, counter, setCounter } = useCart();
+  const { addProduct, deleteProduct } = useCart();
 
-  const [count, setCount] = useState<number>(1);
+  const [countProduct, setCountProduct] = useState<number>(1);
 
-  const decrement = () => {
-    setCount(count - 1);
-    setCounter(counter - 1);
-  };
+  const { cart } = useCart();
 
-  const increment = () => {
-    setCounter(counter + 1);
-    setCount(count + 1);
-  };
+  const filteredProducts = cart.filter((item) => item.id === products.id);
 
-  let result = products.price * count;
-  console.log(result)
+  useEffect(() => {
+    setCountProduct(filteredProducts.length);
+  }, [filteredProducts]);
 
   return (
     <Flex
@@ -83,7 +78,7 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
               color="color.secondary"
               w="10%"
               h="100%"
-              onClick={() => decrement()}
+              onClick={() => deleteProduct(products)}
             >
               -
             </Button>
@@ -95,7 +90,7 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
               border="3px solid"
               borderColor="grey.100"
             >
-              {count}
+              {countProduct}
             </Text>
 
             <Button
@@ -105,7 +100,7 @@ export const ItemsCart = ({ products }: ItemsCartProps) => {
               w="10%"
               h="100%"
               color="color.secondary"
-              onClick={() => increment()}
+              onClick={() => addProduct(products)}
             >
               +
             </Button>

@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import { ItemsCart } from "../ItemsCart";
 
@@ -21,7 +22,18 @@ interface ModalCartProps {
 }
 
 export const ModalCart = ({ isOpen, onClose }: ModalCartProps) => {
-  const { cart, totalValue } = useCart();
+  const { cart } = useCart();
+
+  //esse bloco de código foi consultado em: https://ichi.pro/pt/como-encontrar-objetos-unicos-em-uma-matriz-em-javascript-por-referencia-de-objeto-ou-pares-de-valores-chave-20973273845114
+  const objectsJSON = cart.map((object) => JSON.stringify(object));
+  const objectsJSONSet = new Set(objectsJSON);
+  const uniqueJSONArray = Array.from(objectsJSONSet);
+
+  const newCartUnique = uniqueJSONArray.map((string) => JSON.parse(string));
+  //esse bloco de código foi consultado em: https://ichi.pro/pt/como-encontrar-objetos-unicos-em-uma-matriz-em-javascript-por-referencia-de-objeto-ou-pares-de-valores-chave-20973273845114
+
+  const totalValue = cart.reduce((acc, {price}) => acc + price, 0)
+  console.log(totalValue)
 
   return (
     <>
@@ -39,12 +51,12 @@ export const ModalCart = ({ isOpen, onClose }: ModalCartProps) => {
           <ModalBody>
             {cart.length > 0 ? (
               <>
-                {cart.map((item) => (
+                {newCartUnique.map((item) => 
                   <ItemsCart products={item} key={item.id} />
-                ))}
+                )}
 
                 <hr />
-                <Text>total: {totalValue(cart[0])}</Text>
+                <Text>total: {totalValue.toFixed(2)}</Text>
               </>
             ) : (
               <Box>
